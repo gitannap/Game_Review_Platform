@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forgot Password</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+
+    body {
+      background-image: url("{% static 'images/reset password.png' %}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .form-card {
+      background: linear-gradient(to bottom right, #0e1f40, #112e51); /* dark blue gradient */
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 450px;
+      width: 100%;
+      color: #fff;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .form-card h4 {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .form-card small {
+      color: #b0bec5;
+      display: block;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .form-control {
+      height: 50px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      padding-left: 15px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: #00e0a1; /* teal-green */
+      border: none;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: 10px;
+      color: #000;
+      transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #00c08a;
+      transform: scale(1.02);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .back-link a {
+      text-decoration: none;
+      color: #1de9b6;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="form-card">
+
+    <h4>Forgot Password</h4>
+
+    <small>Enter your username and we’ll send an OTP to your email to reset your password.</small>
+    
+    <form method="post">
+
+      {% csrf_token %}
+
+      <div class="mb-3">
+
+        {{ form.username }}
+
+        {% if form.username.errors %}
+
+          <div class="error-message">{{ form.username.errors.0 }}</div>
+
+        {% endif %}
+
+      </div>
+
+      <button type="submit" class="btn-submit mt-2">Submit</button>
+
+    </form>
+
+    <div class="back-link">
+
+      <a href="{% url 'login' %}">&larr; Back to Login</a>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Rated Games</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background: linear-gradient(to right, #1f1c2c, #928dab);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 40px 20px;
+        color: #ffffff;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 36px;
+        color: #ffffff;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        letter-spacing: 1.2px;
+    }
+
+    .games-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 30px;
+        max-width: 1200px;
+        margin: auto;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .game-card {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(14px);
+        padding: 24px;
+        border-radius: 20px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .game-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .game-cover {
+        width: 220px;
+        height: 300px;
+        border-radius: 15px;
+        margin-bottom: 18px;
+        object-fit: cover;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    }
+
+    .game-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    .game-title a {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.2s ease-in-out;
+    }
+
+    .game-title a:hover {
+        color: #ffdd57;
+    }
+
+    .rating {
+        font-size: 16px;
+        color: #ffdd57;
+        font-weight: 500;
+    }
+
+    .review-count {
+        font-size: 13px;
+        color: #dddddd;
+        margin-top: 5px;
+    }
+
+    .no-games {
+        text-align: center;
+        font-size: 18px;
+        margin-top: 40px;
+        color: #dddddd;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+</head>
+
+<body>
+
+<h2>Top Rated Games ⭐</h2>
+
+<div class="container mt-4">
+
+  <div class="text-end">
+
+    <a href="{% url 'game_list' %}" class="btn btn-outline-light">
+
+      ← Back to Games
+      
+    </a>
+
+  </div>
+
+</div>
+
+
+
+<div class="games-container">
+
+    {% for game in games %}
+
+        <div class="game-card">
+
+            {% if game.cover_image %}
+                <img src="{{ game.cover_image.url }}" alt="{{ game.title }} Cover" class="game-cover">
+            {% endif %}
+
+            <div class="game-title">
+                <a href="{% url 'game_detail' pk=game.id %}">{{ game.title }}</a>
+            </div>
+
+            <div class="rating">
+                ⭐ {{ game.avg_rating|floatformat:1 }} / 5
+            </div>
+
+            <div class="review-count">
+                {{ game.reviews.count }} review{{ game.reviews.count|pluralize }}
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="no-games">No top-rated games found.</div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+
+</html>

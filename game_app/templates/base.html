@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Review Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    {% comment %} <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@500&display=swap" rel="stylesheet"> {% endcomment %}
+
+    <style>
+
+  /* Neon Text Gradient */
+.text-gradient {
+  background: linear-gradient(90deg, #00e5ff, #00ffab, #ffc107);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* NavLink Hover Effect */
+.nav-neon {
+  color: #f8f9fa !important;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+.nav-neon:hover {
+  color: #00ffab !important;
+  transform: scale(1.05);
+} 
+
+/* Glowing Button */
+.btn-glow {
+  background-color: #00e676;
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.7);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-glow:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.9);
+}
+
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+  }
+
+  .custom-carousel {
+    max-height: 90vh;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+input::placeholder {
+  color: black !important;
+  opacity: 1;
+}
+
+
+/* Optional: Make sure input text is also white */
+input {
+  color: white !important;
+}
+
+
+  .carousel-img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+
+  /* 🔥 Advanced Welcome Heading */
+  .welcome-heading {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #ff416c, #ff4b2b, #1e90ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 2.5s linear infinite;
+  }
+
+  @keyframes shine {
+    0% { background-position: 0%;}
+    100% { background-position: 200%;}
+  }
+
+  .navbar .nav-link:hover {
+    color: #ffca28 !important;
+    transition: color 0.3s ease;
+  } 
+
+  .footer-link {
+  color: #cccccc;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+.footer-link:hover {
+  color: #00e676;
+  transform: translateX(4px);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #00e5ff, #00ffab, #ffca28);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+</style>
+
+    
+</head>
+
+<body>
+
+   {% comment %} <!-- Navbar -->
+<nav class="navbar navbar-expand-lg shadow-lg rounded-bottom" style="backdrop-filter: blur(8px); background: linear-gradient(90deg,  #3c4c91, #35cc8d, #c3b265);">
+
+  <div class="container-fluid px-4">
+
+    <a class="navbar-brand fw-bold text-white fs-4" href="{% url 'home' %}">
+
+      <i class="fa-solid fa-joystick me-2"></i>Game Review Platform
+
+    </a>
+
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+
+      <span class="navbar-toggler-icon"></span>
+
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+
+      <form class="d-flex mx-lg-auto my-3 my-lg-0" action="{% url 'search_filter' %}" role="search">
+
+        <input class="form-control me-2 rounded-pill border-0 shadow-sm" name="query" type="search"
+          placeholder="Search for games..." style="min-width: 300px;">
+
+          <button class="btn rounded-pill btn-glow" type="submit">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+          </button>
+
+      </form>
+
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <li class="nav-item mx-1">
+
+          <a class="nav-link text-white fw-semibold" href="{% url 'game_list' %}">
+
+            <i class="fa-solid fa-gamepad me-1"></i>Games
+
+          </a>
+
+        </li>
+
+        {% if user.is_authenticated %}
+
+          <li class="nav-item mx-2 d-flex align-items-center">
+
+            <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
+
+              <i class="fa-solid fa-user-circle me-1"></i>{{ user.username }}
+
+            </span>
+
+          </li>
+
+          <li class="nav-item mx-1">
+
+            <a class="nav-link text-white fw-semibold" href="{% url 'logout' %}">
+
+              <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+
+            </a>
+
+          </li>
+
+        {% else %}
+
+          <li class="nav-item mx-1">
+
+            <a class="nav-link text-white fw-semibold" href="{% url 'register' %}">
+
+              <i class="fa-solid fa-user-plus me-1"></i>Register
+
+            </a>
+
+          </li>
+
+          <li class="nav-item mx-1">
+
+            <a class="nav-link text-white fw-semibold" href="{% url 'login' %}">
+
+              <i class="fa-solid fa-right-to-bracket me-1"></i>Login
+
+            </a>
+
+          </li>
+
+        {% endif %}
+
+      </ul>
+
+    </div>
+
+  </div>
+
+</nav> {% endcomment %}
+
+<!-- 🌌 Pro Gamer Navbar -->
+<nav class="navbar navbar-expand-lg shadow-lg rounded-bottom" style="backdrop-filter: blur(8px); background: linear-gradient(90deg,  #3c4c91, #35cc8d, #c3b265); border-bottom: 2px solid #00ffab;">
+  <div class="container-fluid px-4">
+
+    <!-- Brand Logo -->
+    <a class="navbar-brand fw-bold fs-4 text-gradient" href="{% url 'home' %}">
+      <i class="fa-solid fa-joystick me-2"></i>Game Review Platform
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+
+      <!-- 🔍 Search -->
+      <form class="d-flex mx-lg-auto my-3 my-lg-0" action="{% url 'search_filter' %}" role="search">
+        {% comment %} <input class="form-control me-2 rounded-pill border-0 shadow-sm bg-dark text-white" name="query" type="search"
+               placeholder="Search for games..." style="min-width: 300px;"> {% endcomment %}
+
+        <input class="form-control me-2 rounded-pill border-0 shadow-sm" name="query" type="search" placeholder="Search for games..." 
+        style="min-width: 300px; background-color: white; color: black;">
+
+        <button class="btn rounded-pill btn-glow" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+
+      </form>
+
+      <!-- Navigation Links -->
+      <ul class="navbar-nav ms-auto align-items-center">
+
+        <li class="nav-item mx-2">
+
+          <a class="nav-link nav-neon" href="{% url 'game_list' %}">
+            <i class="fa-solid fa-gamepad me-1"></i>Games
+          </a>
+
+        </li>
+
+        {% if user.is_authenticated %}
+
+          <li class="nav-item mx-2 d-flex align-items-center">
+
+            <span class="badge bg-gradient text-dark px-3 py-2 rounded-pill bg-warning-subtle shadow-sm">
+              <i class="fa-solid fa-user-circle me-1"></i>{{ user.username }}
+            </span>
+
+          </li>
+
+          <li class="nav-item mx-2">
+
+            <a class="nav-link nav-neon" href="{% url 'logout' %}">
+              <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+            </a>
+
+          </li>
+
+        {% else %}
+
+          <li class="nav-item mx-2">
+
+            <a class="nav-link nav-neon" href="{% url 'register' %}">
+              <i class="fa-solid fa-user-plus me-1"></i>Register
+            </a>
+
+          </li>
+
+          <li class="nav-item mx-2">
+
+            <a class="nav-link nav-neon" href="{% url 'login' %}">
+              <i class="fa-solid fa-right-to-bracket me-1"></i>Login
+            </a>
+
+          </li>
+
+        {% endif %}
+
+      </ul>
+
+    </div>
+
+  </div>
+
+</nav>
+
+
+    
+    <div class="container mt-3">
+
+  <div class="row align-items-center">
+    
+
+    <div class="col-md-6 offset-md-3 text-center">
+      
+      <h2 class="welcome-heading">Welcome!</h2>
+
+      <p class="text-muted mt-2">Explore the world of games – read reviews, share your opinions!</p>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+</div> 
+
+    </div>
+
+    {% block carousel %}
+   
+            <div class="row justify-content-center mt-4">
+
+    <div class="col-md-9">
+
+        <div class="custom-carousel mx-auto">
+
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+
+                <div class="carousel-indicators">
+
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+                </div>
+                <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+                        <img src="{% static 'images/customer-reviews-63d8b1a454172-sej.webp' %}" class="d-block w-100 carousel-img" alt="Slide 1">
+                    </div>
+
+                    <div class="carousel-item">
+                        <img src="{% static 'images/gamercc.webp' %}" class="d-block w-40 carousel-img" alt="Slide 2">
+                    </div>
+
+                    <div class="carousel-item">
+                        <img src="{% static 'images/rccc.webp' %}" class="d-block w-100 carousel-img" alt="Slide 3">
+                    </div>
+
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+
+                </button>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    {% endblock %}
+
+    {% block content %}
+
+    {% endblock %}
+
+
+    <div class="container">
+
+        <div class="row justify-content-center mt-2">
+
+            <div class="text-center col-md-2 mb-2">
+
+              <h5 class="fw-bold">Join Our Community</h5>
+
+              <p class="text-muted">Create an account to post reviews, rate games, and more.</p>
+              
+              <a href="/register" class="btn btn-glow mt-2">Get Started</a>
+
+              
+            </div>
+
+        </div>
+
+    </div> 
+
+    {% comment %} <!-- 🌌 Themed Section (matches footer) -->
+<div style="background: linear-gradient(to right, #1a1a2e, #16213e); color: white; padding-top: 40px; padding-bottom: 40px;">
+
+  <!-- Welcome Text -->
+  <div class="container mt-3">
+
+    <div class="row align-items-center">
+
+      <div class="col-md-6 offset-md-3 text-center">
+
+        <h2 class="welcome-heading text-gradient">Welcome!</h2>
+
+        <p class="text-light mt-2">Explore the world of games – read reviews, share your opinions!</p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 🚀 Carousel -->
+  <div class="row justify-content-center mt-4">
+
+    <div class="col-md-9">
+
+      <div class="custom-carousel mx-auto">
+
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+
+          <div class="carousel-indicators">
+
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+          </div>
+
+          <div class="carousel-inner">
+
+            <div class="carousel-item active">
+              <img src="{% static 'images/customer-reviews-63d8b1a454172-sej.webp' %}" class="d-block w-100 carousel-img" alt="Slide 1">
+            </div>
+
+            <div class="carousel-item">
+              <img src="{% static 'images/gamercc.webp' %}" class="d-block w-40 carousel-img" alt="Slide 2">
+            </div>
+
+            <div class="carousel-item">
+              <img src="{% static 'images/rccc.webp' %}" class="d-block w-100 carousel-img" alt="Slide 3">
+            </div>
+
+          </div>
+
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+
+          </button>
+
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 👥 Join Section -->
+  <div class="container">
+
+    <div class="row justify-content-center mt-5">
+
+      <div class="text-center col-md-4">
+
+        <h5 class="fw-bold text-white">Join Our Community</h5>
+
+        <p class="text-light">Create an account to post reviews, rate games, and more.</p>
+
+        <a href="/register" class="btn btn-glow mt-2">Get Started</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div> {% endcomment %}
+
+    {% comment %} <footer class="bg-white border-top mt-5 pt-5 pb-3">
+
+      <div style="height: 6px; background: linear-gradient(90deg, #00d084, #ffc107, #ff6b6b);"></div>
+
+        
+        <div class="container text-center mt-4">
+
+            <img src="{% static 'images/Purple Pastel Mixed Media Game Review YouTube Thumbnail.png' %}" alt="Logo" style="height: 40px;">
+
+            <h5 class="fw-bold mt-2">Game Review Platform</h5>
+
+            <div class="row mt-4">
+
+                <div class="col-md-4 mb-3">
+
+                    <h6 class="fw-bold">Overview</h6>
+
+                    <ul class="list-unstyled">
+
+                        <li><a href="{% url 'about' %}" class="text-dark text-decoration-none">About</a></li>
+                        <li><a href="{% url 'help_center' %}" class="text-dark text-decoration-none">Help Center</a></li>
+
+                    </ul>
+
+                    <h6 class="fw-bold">Legal & Policy Links</h6>
+
+                    <ul class="list-unstyled">
+
+                        <li><a href="{% url 'privacy_policy' %}" class="text-dark text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="{% url 'terms_of_use' %}" class="text-dark text-decoration-none">Terms of Use</a></li>
+
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <small class="text-muted d-block mt-4">Game Review Platform is your one-stop site for finding, reviewing, and rating your favorite games.</small>
+                    <small class="text-muted d-block mt-4">"Where gamers speak, and great games shine."</small>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <h6 class="fw-bold">Contact on E-mail</h6>
+
+                    <div class="d-flex justify-content-center gap-2 align-items-center fs-5">
+
+                        <a href="mailto:annaseby5213@gmail.com" class="text-dark d-flex align-items-center text-decoration-none">
+
+                            <span style="font-size: 0.85rem;">annaseby5213@gmail.com</span>
+                            <i class="fa-solid fa-envelope me-2"></i> 
+
+                        </a>
+
+                    </div>
+
+                    <small class="text-muted d-block mt-4">Uncover new games</small>
+                    <small class="text-muted d-block mt-3">Make your voice count with a review.</small>
+
+                </div>
+
+            </div>
+            
+            <small class="text-muted d-block mt-4">&copy; 2025 GAME REVIEW PLATFORM. ALL RIGHTS RESERVED.</small>
+
+        </div>
+
+    </footer>  {% endcomment %}
+
+<footer class="text-white pt-5 pb-4" style="background: linear-gradient(to right, #1a1a2e, #16213e); position: relative; overflow: hidden;">
+  
+  <!-- Gradient Bar -->
+  <div style="height: 5px; background: linear-gradient(90deg, #00ffab, #ffc107, #ff4b2b);"></div>
+
+  <div class="container text-center text-md-start mt-5">
+
+    <!-- Brand Logo and Title -->
+    <div class="text-center mb-4">
+
+      <img src="{% static 'images/Purple Pastel Mixed Media Game Review YouTube Thumbnail.png' %}" alt="Logo" style="height: 45px;">
+
+      <h4 class="fw-bold mt-2 text-gradient">Game Review Platform</h4>
+
+    </div>
+
+    <div class="row mt-4">
+
+      <!-- Column 1 -->
+      <div class="col-md-4 mb-4">
+
+        <h6 class="text-uppercase fw-bold mb-3">Overview</h6>
+
+        <ul class="list-unstyled">
+
+          <li><a href="{% url 'about' %}" class="footer-link">About</a></li>
+
+          <li><a href="{% url 'help_center' %}" class="footer-link">Help Center</a></li>
+
+        </ul>
+
+        <h6 class="text-uppercase fw-bold mt-4 mb-2">Legal</h6>
+
+        <ul class="list-unstyled">
+
+          <li><a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a></li>
+
+          <li><a href="{% url 'terms_of_use' %}" class="footer-link">Terms of Use</a></li>
+
+        </ul>
+
+      </div>
+
+      <!-- Column 2 -->
+      <div class="col-md-4 mb-4">
+
+        <p class="text mt-2">Game Review Platform is your one-stop destination for discovering, reviewing, and celebrating the best games.</p>
+
+        <p class="fst-italic text-info mt-4">"Where gamers speak, and great games shine."</p>
+
+      </div>
+
+      <!-- Column 3 -->
+      <div class="col-md-4 mb-4">
+
+        <h6 class="text-uppercase fw-bold mb-3">Contact</h6>
+
+        <div class="d-flex justify-content-center justify-content-md-start align-items-center gap-2 fs-6">
+
+          <i class="fa-solid fa-envelope text-warning"></i>
+
+          <a href="mailto:annaseby5213@gmail.com" class="footer-link">annaseby5213@gmail.com</a>
+
+        </div>
+
+        <p class="text mt-4 mb-1">🎯 Uncover new games</p>
+
+        <p class="text mb-0">✍️ Share your gaming voice</p>
+
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center mt-4 pt-3 border-top border-secondary">
+
+      <small class="text">&copy; 2025 <span class="text-white">GAME REVIEW PLATFORM</span>. All rights reserved.</small>
+
+    </div>
+
+  </div>
+  
+</footer> 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

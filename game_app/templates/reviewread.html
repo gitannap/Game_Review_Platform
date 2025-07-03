@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reviews</title>
+  {% load static %}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" 
+  integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+  body {
+    padding: 20px;
+    background: linear-gradient(to right, #0f172a, #1e293b); /* dark blue gradient */
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+  }
+
+  .review-card {
+    background: rgba(15, 23, 42, 0.85); /* semi-transparent deep blue */
+    border: 1px solid #334155;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    color: #e2e8f0;
+    transition: transform 0.2s ease;
+  }
+
+  .review-card:hover {
+    transform: scale(1.01);
+  }
+
+  h2 {
+    color: #00ffab;
+    text-shadow: 0 0 10px rgba(0, 255, 171, 0.3);
+  }
+
+  .review-game {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .review-rating {
+    color: #ffc107;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+  }
+
+  .review-user {
+    font-style: italic;
+    color: #cbd5e1;
+    margin-bottom: 5px;
+  }
+
+  .review-comment {
+    margin-top: 12px;
+    font-size: 1rem;
+    color: #f8fafc;
+  }
+
+  .btn {
+    border-radius: 25px;
+    padding: 6px 18px;
+    font-size: 0.95rem;
+  }
+
+  .btn-outline-success:hover,
+  .btn-outline-danger:hover,
+  .btn-outline-warning:hover {
+    color: white !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 8px rgba(0,255,171,0.3);
+  }
+
+  .floating-add-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #00ffab;
+    color: #000;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 255, 171, 0.4);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .floating-add-btn:hover {
+    background: #00cc88;
+    transform: scale(1.08);
+  }
+
+  .floating-add-btn i {
+    margin-right: 8px;
+  }
+
+  .btn-secondary {
+    background-color: #475569;
+    border: none;
+  }
+
+  .btn-secondary:hover {
+    background-color: #64748b;
+  }
+
+  a, a:hover {
+    text-decoration: none;
+  }
+
+</style>
+
+  {% comment %} <style>
+
+    body {
+      padding: 20px;
+      background-color:rgb(183, 190, 206);
+      
+      position: relative;
+    }
+    .review-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .review-rating {
+      color: #ffc107; /* gold color for star ratings */
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .review-user {
+      font-style: italic;
+      color: #6c757d;
+    }
+    .review-game {
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+    }
+    .review-comment {
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+    .floating-add-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.3s;
+  z-index: 1000;
+}
+.floating-add-btn:hover {
+  background-color: #084298;
+  transform: scale(1.05);
+}
+.floating-add-btn i {
+  margin-right: 6px;
+}
+
+  </style> {% endcomment %}
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2 class="mb-4">{{ game.title }} - Reviews ⭐</h2>
+
+
+{% for item in review_data %}
+
+  <div class="review-card">
+
+    <div class="review-user"><i class="fa-solid fa-user me-1"></i> {{ item.review.user.username }}</div>
+    <div class="review-rating">Rating : {{ item.review.rating }} / 5</div>
+    <div class="review-comment"><i class="fa-solid fa-comment-dots me-2" style="color: #00b4d8;"></i>
+{{ item.review.comment }}</div>
+
+    {% if user.is_authenticated %}
+
+      {% if user == item.review.user %}
+
+        <!-- ✅ Owner: Only Like button -->
+        <form method="post" action="{% url 'like_review' item.review.id %}" class="d-inline">
+
+          {% csrf_token %}
+
+          <button type="submit" class="btn {% if item.user_reaction == 'like' %}btn-success{% else %}btn-outline-success{% endif %}">
+            👍 ({{ item.like_count }})
+          </button>
+
+        </form>
+
+      {% else %}
+
+        <!-- ✅ Other users: Like + Dislike -->
+        <form method="post" action="{% url 'like_review' item.review.id %}" class="d-inline">
+
+          {% csrf_token %}
+
+          <button type="submit" class="btn {% if item.user_reaction == 'like' %}btn-success{% else %}btn-outline-success{% endif %}">
+            👍 ({{ item.like_count }})
+          </button>
+
+        </form>
+
+        <form method="post" action="{% url 'dislike_review' item.review.id %}" class="d-inline">
+
+          {% csrf_token %}
+
+          <button type="submit" class="btn {% if item.user_reaction == 'dislike' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+            👎  ({{ item.dislike_count }})
+          </button>
+
+        </form>
+
+      {% endif %}
+
+    {% else %}
+
+      <!-- ❌ Not logged in -->
+      <p class="text mt-4">Login to react to this review.</p>
+    {% endif %}
+
+
+
+    {% comment %} {% if item.like_users %}
+  <p class="mt-2 mb-0 text-success">
+    👍 Liked by: {{ item.like_users|join:", " }}
+  </p>
+{% endif %}
+
+{% if item.dislike_users %}
+  <p class="mb-0 text-danger">
+    👎 Disliked by: {{ item.dislike_users|join:", " }}
+  </p>
+{% endif %} {% endcomment %}
+
+{% if user.is_authenticated %}
+  {% if item.like_users %}
+    <p class="mt-2 mb-0 text-success">
+      👍 Liked by: {{ item.like_users|join:", " }}
+    </p>
+  {% endif %}
+  {% if item.dislike_users %}
+    <p class="mb-0 text-danger">
+      👎 Disliked by: {{ item.dislike_users|join:", " }}
+    </p>
+  {% endif %}
+{% endif %}
+
+
+
+    <!-- ✏️ Update and 🗑️ Delete only for the owner -->
+    {% if user == item.review.user %}
+
+      <div class="mt-2">
+
+        <a href="{% url 'review_update' item.review.id %}" class="btn btn-outline-warning me-2">✏️ Update</a>
+        <a href="{% url 'review_delete' item.review.id %}" class="btn btn-outline-danger">🗑️ Delete</a>
+
+      </div>
+
+    {% endif %}
+
+  </div>
+
+{% empty %}
+
+  <p class="text">🙁 No reviews yet for this game. Be the first to add one!</p>
+  
+{% endfor %}
+
+
+
+
+
+  <div class="text-center mt-4">
+
+    <a href="{% url 'game_detail' game.pk %}" class="btn btn-secondary">← Back to {{ game.title }}</a>
+    
+  </div>
+
+</div>
+
+{% if user.is_authenticated %}
+
+  <a href="{% url 'review_add' game.pk %}" class="floating-add-btn">
+    <i class="fa-solid fa-plus"></i> Add Review
+  </a>
+
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</body> 
+
+
+</html> 
+
+
