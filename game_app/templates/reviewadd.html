@@ -7,14 +7,16 @@
   
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  
-  <!-- Optional: load static for Django static files -->
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
   {% load static %}
   
   <style>
 
     body {
-      background-image: url("{% static 'images/top-view-faces-with-emotions-copy-space-blue-monday_23-2148756146.avif' %}"); /* replace with your image path */
+      background-image: url("{% static 'images/reviewadd.webp' %}");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -23,25 +25,52 @@
       justify-content: center;
       align-items: center;
       padding: 40px 20px;
+      font-family: 'Poppins', sans-serif;
     }
+
     .review-form-container {
-      background: rgba(255, 255, 255, 0.9);
+      background-color: rgba(28, 28, 28, 0.9); /* soft black */
+      color: #ffffff;
       padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.4), 0 0 50px rgba(0, 255, 255, 0.2); /* glowing effect */
       max-width: 500px;
       width: 100%;
+      transition: box-shadow 0.3s ease;
     }
+
+    .review-form-container:hover {
+      box-shadow: 0 0 35px rgba(0, 255, 255, 0.6), 0 0 70px rgba(0, 255, 255, 0.3);
+    }
+
     h2 {
       text-align: center;
       margin-bottom: 25px;
-      color: #343a40;
+      color: #ffffff;
       font-weight: 700;
+      font-size: 1.8rem;
     }
+
+    label {
+      color: #f1f1f1;
+      font-weight: 500;
+    }
+
+    .form-control {
+      background-color: #2a2a2a;
+      border: 1px solid #555;
+      color: #fff;
+    }
+
+    .form-control::placeholder {
+      color: #bbb;
+    }
+
     button {
       width: 100%;
       font-weight: 600;
     }
+
   </style>
 
 </head>
@@ -65,7 +94,6 @@
 </div>
 
 <!-- Bootstrap JS Bundle -->
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

@@ -14,15 +14,11 @@ from django.utils.decorators import method_decorator
 
 from django.contrib.auth.decorators import login_required
 
-from django.db.models import Avg,Q
-
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg
 
 from django.contrib import messages
 
-from django.db.models import Avg, Value, FloatField
-
-from django.db.models.functions import Coalesce
+from django.db.models import Avg
 
 import random
 
@@ -363,64 +359,7 @@ class ReviewAddView(View):
             return redirect('review_read', game_id=pk)
         
         return render(request, "reviewadd.html", {"form": form, "game_id": pk})
-
-
-# class ReviewReadView(View):
     
-#     def get(self, request, game_id):
-        
-#         game = get_object_or_404(Game, pk=game_id)
-        
-#         reviews = game.reviews.all()
-
-#         review_data = []
-        
-#         for review in reviews:
-            
-#             # Get all reactions for this review
-#             like_reactions = review.reactions.filter(is_like=True).select_related('user')
-            
-#             dislike_reactions = review.reactions.filter(is_like=False).select_related('user')
-
-#             # Count reactions
-#             like_count = like_reactions.count()
-            
-#             dislike_count = dislike_reactions.count()
-
-#             # Get list of usernames
-#             like_users = [reaction.user.username for reaction in like_reactions]
-            
-#             dislike_users = [reaction.user.username for reaction in dislike_reactions]
-
-#             # Check current user's reaction
-#             user_reaction = None
-            
-#             if request.user.is_authenticated:
-                
-#                 reaction = review.reactions.filter(user=request.user).first()
-                
-#                 if reaction:
-                    
-#                     user_reaction = 'like' if reaction.is_like else 'dislike'
-
-#             # Append all data
-#             review_data.append({
-                
-#                 'review': review,
-#                 'like_count': like_count,
-#                 'dislike_count': dislike_count,
-#                 'like_users': like_users,
-#                 'dislike_users': dislike_users,
-#                 'user_reaction': user_reaction,
-                
-#             })
-
-#         return render(request, 'reviewread.html', {
-            
-#             'game': game,
-#             'review_data': review_data,
-            
-#         })
 
 class ReviewReadView(View):
     

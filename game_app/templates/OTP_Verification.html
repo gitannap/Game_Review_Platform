@@ -94,7 +94,7 @@
 
 <body>
 
-    <div class="overlay"></div> <!-- 🔆 Background overlay -->
+    <div class="overlay"></div> 
 
     <div class="otp-box">
 
@@ -105,7 +105,9 @@
             {% csrf_token %}
 
             <div class="mb-3">
+
                 <input type="text" name="otp" class="form-control" placeholder="Enter OTP" required>
+
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Verify</button>
@@ -119,7 +121,9 @@
                 {% for message in messages %}
 
                     <div class="alert alert-danger p-2" role="alert">
+
                         {{ message }}
+                        
                     </div>
 
                 {% endfor %}
