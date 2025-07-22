@@ -96,19 +96,19 @@ Here are a few screenshots to give you a visual overview of the application:
 ![OTP After Registration Page](game_app/static/images/OTP_registration.png)
 
 ### Login Page
-![Login Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/home.png)
+![Login Page](game_app/static/images/login_page.png)
 
 ### Search Page
-![Search Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/search_filter.png)
+![Search Page](game_app/static/images/search_filter.png)
 
 ### Game Page
-![Game Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/game_page.png)
+![Game Page](game_app/static/images/game_page.png)
 
 ### Game Detail Page
-![Game Detail Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/game_detail.png)
+![Game Detail Page](game_app/static/images/game_detail.png)
 
 ### Add Review Page
-![Add Review Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/add_review.png)
+![Add Review Page](game_app/static/images/add_review.png)
 
 ---
 
