@@ -87,29 +87,28 @@ Follow these steps to run the project locally:
 Here are a few screenshots to give you a visual overview of the application:
 
 ### Home Page
-![Home Page](static/images/home.png)
-
+![Home Page](game_app/static/images/home.png)
 
 ### Registration Page
-![Registration Page](static/images/registration_page.png)
+![Registration Page](game_app/static/images/registration_page.png)
 
 ### OTP After Registration Page
-![OTP After Registration Page](static/images/OTP_registration.png)
+![OTP After Registration Page](game_app/static/images/OTP_registration.png)
 
 ### Login Page
-![Login Page](static/images/login_page.png)
+![Login Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/home.png)
 
 ### Search Page
-![Search Page](static/images/search_filter.png)
+![Search Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/search_filter.png)
 
 ### Game Page
-![Game Page](static/images/game_page.png)
+![Game Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/game_page.png)
 
 ### Game Detail Page
-![Game Detail Page](static/images/game_detail.png)
+![Game Detail Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/game_detail.png)
 
 ### Add Review Page
-![Add Review Page](static/images/add_review.png)
+![Add Review Page](https://raw.githubusercontent.com/gitannap/Game Review Platform/main/game_app/static/images/add_review.png)
 
 ---
 
@@ -124,8 +123,11 @@ Developed by **Anna Seby**
 For queries or collaboration:
 
 Anna Seby
+
 📧 annaseby5213@gmail.com
+
 🔗 LinkedIn: https://www.linkedin.com/in/anna-seby
+
 🔗 GitHub: https://github.com/gitannap
 
 ---
